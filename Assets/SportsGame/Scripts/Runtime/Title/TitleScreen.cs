@@ -16,7 +16,7 @@ namespace SportsGame
             root = UIKit.SafeRoot(UIKit.CreateCanvas("TitleUI", 5));
             startPanel = StartPanel.Build(root, ShowSelect);
             selectPanel = BuildSelect();
-            Show(startPanel);
+            Show(SceneFlow.ConsumeOpenSelect() ? selectPanel : startPanel);
             AudioManager.SetAmbience(false);
             AudioManager.SetTitleMusic(true);
             AudioManager.Warmup(Sfx.Click, Sfx.Confirm, Sfx.Back);

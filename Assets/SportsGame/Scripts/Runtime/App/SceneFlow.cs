@@ -8,7 +8,29 @@ namespace SportsGame
     {
         public const string TitleScene = "Title";
 
-        public static void GoTitle() => Load(TitleScene);
+        /// <summary>次に開く Title シーンで、スタート画面を飛ばして種目選択から始めるか。</summary>
+        static bool openSelectOnTitle;
+
+        public static void GoTitle()
+        {
+            openSelectOnTitle = false;
+            Load(TitleScene);
+        }
+
+        /// <summary>試合から戻るとき用。Title シーンを読み直し、ボタンの文言どおり種目選択から始める。</summary>
+        public static void GoSportSelect()
+        {
+            openSelectOnTitle = true;
+            Load(TitleScene);
+        }
+
+        /// <summary>種目選択から始めるかを返してフラグを戻す(TitleScreen が起動時に 1 回だけ読む)。</summary>
+        public static bool ConsumeOpenSelect()
+        {
+            bool open = openSelectOnTitle;
+            openSelectOnTitle = false;
+            return open;
+        }
 
         public static void GoSport(Sport sport)
         {

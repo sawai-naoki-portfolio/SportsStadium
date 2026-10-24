@@ -43,7 +43,7 @@ alt もう一度
   Hud -> Flow : Reload()
 else 種目選択へ
   P -> Hud : 種目選択へ
-  Hud -> Flow : GoTitle()
+  Hud -> Flow : GoSportSelect()（Title シーンを種目選択から開く）
 end
 
 note over Game

@@ -43,7 +43,7 @@ namespace SportsGame
 
             var again = UIKit.Button(body, "Again", "もう一度", UITheme.Green, SceneFlow.Reload, 46, Sfx.Confirm);
             UIKit.Place((RectTransform)again.transform, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(-240f, 40f), new Vector2(440f, 120f));
-            var menu = UIKit.Button(body, "Menu", "種目選択へ", UITheme.Blue, SceneFlow.GoTitle, 46, Sfx.Back);
+            var menu = UIKit.Button(body, "Menu", "種目選択へ", UITheme.Blue, SceneFlow.GoSportSelect, 46, Sfx.Back);
             UIKit.Place((RectTransform)menu.transform, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(240f, 40f), new Vector2(440f, 120f));
         }
 

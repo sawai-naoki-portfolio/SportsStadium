@@ -40,5 +40,4 @@ Unity の **Window > General > Test Runner** で EditMode / PlayMode を実行�
 | 項目 | 内容 |
 |---|---|
 | 残りの画面のスクリーンショット | 試合設定・設定・ポーズ・リザルトの画面イメージはワイヤーフレームのまま。実機で撮影して差し替える（[screenshots/README.md](screenshots/README.md)） |
-| 「種目選択へ」ボタンの戻り先 | ポーズとリザルトの「種目選択へ」は Title シーンを読み直すため、スタート画面（「画面をタップしてスタート」）から始まる。文言どおり種目選択パネルを直接開くようにすると操作が 1 回減る |
 | CI | Unity 非依存の得点ロジック（`*Score`）は .NET で回せるため、vector と同様に GitHub Actions でテストできる |

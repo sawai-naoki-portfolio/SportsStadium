@@ -19,7 +19,7 @@ namespace SportsGame
             modal = ModalPanel.Open(canvas, "ポーズ", new Vector2(760f, 560f));
             AddButton("Resume", "試合に戻る", UITheme.Green, -150f, Close, Sfx.Click, 44);
             AddButton("Restart", "最初からやり直す", UITheme.Blue, -285f, () => { Close(); SceneFlow.Reload(); }, Sfx.Click, 40);
-            AddButton("Quit", "種目選択へ戻る", UITheme.Muted, -410f, () => { Close(); SceneFlow.GoTitle(); }, Sfx.Back, 40);
+            AddButton("Quit", "種目選択へ戻る", UITheme.Muted, -410f, () => { Close(); SceneFlow.GoSportSelect(); }, Sfx.Back, 40);
         }
 
         public void Close()
