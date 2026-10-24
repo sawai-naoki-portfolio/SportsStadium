@@ -1,6 +1,6 @@
 # スポーツスタジアム (SPORTS STADIUM)
 
-> 澤井直輝のポートフォリオ作品のひとつです（[作品一覧へ](https://github.com/sawai-naoki-portfolio/Portfolio)）。
+> 澤井直輝のポートフォリオ作品のひとつです（[作品一覧へ](https://github.com/sawai-naoki-portfolio)）。
 
 バスケットボール・テニス・バレーボールの3種目を遊べる、スマホ向け(横画面)の3Dスポーツゲームです。
 コート・キャラクター・テクスチャ・効果音/BGM はすべて実行時に生成しており、外部アセットは日本語フォントのみです。
