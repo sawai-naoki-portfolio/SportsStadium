@@ -1,0 +1,76 @@
+@startuml class-physics
+!include _style.iuml
+title クラス図② 決定論的なボール物理
+
+class BallSim {
+  + pos / vel : Vector3
+  + radius / gravity / gravityScale
+  + restitution / friction / rollDecay
+  + substeps = 4
+  + colliders : List<IBallCollider>
+  + onContact : Action<BallContact>
+  + OnGround : bool
+  --
+  + Launch(position, velocity, gScale, bounceXZ, bounceY)
+  + Hold(position)
+  + Step(dt)
+  + Clone() : BallSim
+}
+class BallMath <<static>> {
+  + SolveByTime(from, to, t, g) : Vector3
+  + SolveByApex(from, to, apexY, g, out flightTime) : Vector3
+  + SolveByAngle(from, to, angleDeg, g, out velocity) : bool
+}
+class BallPredictor <<static>> {
+  + Step = 1/60
+  + Simulate(ball, maxTime, visit : Func<Sample, bool>)
+}
+struct Sample {
+  pos / vel / time
+  bounces / justBounced
+}
+interface IBallCollider
+class AabbCollider {
+  軸平行の箱
+  バックボード・支柱
+}
+class TorusCollider {
+  バスケットのリング
+}
+class NetCollider {
+  テニス・バレーのネット
+}
+class BoundsCollider {
+  箱の内側に閉じ込める壁
+  （体育館の壁など）
+}
+class NetTrajectory <<static>> {
+  + OverNet(start, target, speed, g, net, r, margin)
+  ネットを越える初速度（テニス・バレー共用）
+}
+struct BallContact
+
+BallSim o-- "*" IBallCollider
+IBallCollider <|.. AabbCollider
+IBallCollider <|.. TorusCollider
+IBallCollider <|.. NetCollider
+IBallCollider <|.. BoundsCollider
+BallSim ..> BallContact : onContact
+BallPredictor ..> BallSim : Clone して先読み
+BallPredictor ..> Sample
+NetTrajectory ..> NetCollider
+
+class BasketballShotModel <<static>> {
+  + BaseChance(kind, distance)
+  + Contest(shooter, defender, airborne)
+  成功ならリング中心へ、失敗ならリングに
+  当たる位置へ投げ、結果は物理に任せる
+}
+BasketballShotModel ..> BallMath
+
+note bottom of BallSim
+  床は BallSim が扱う。重力を解析解で積分（サブステップ 4）。
+  BallMath の軌道計算と実際の動きが一致するので、
+  「成功と判定したシュートが物理的にも入る」ことをテストで確認している。
+end note
+@enduml

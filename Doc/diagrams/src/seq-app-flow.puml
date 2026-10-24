@@ -1,0 +1,53 @@
+@startuml seq-app-flow
+!include _style.iuml
+title シーケンス図① 起動から試合終了まで
+autonumber "<b>[0]"
+
+actor プレイヤー as P
+participant "AppBootstrap" as Boot
+participant "TitleScreen\nStart/Select/Setup" as Title
+participant "GameSettings\nMatchRecords" as Set
+database "PlayerPrefs" as PP
+participant "SceneFlow\nScreenFader" as Flow
+participant "TennisGame\n(MatchBase)" as Game
+participant "MatchHud" as Hud
+
+Boot -> Set : 設定と戦績を読み込み（値を検証）
+Set -> PP : 読み込み
+Boot -> Title : Title シーン
+Title --> P : SPORTS STADIUM「画面をタップしてスタート」
+P -> Title : タップ
+Title --> P : 種目をえらぼう（3 枚のカード・通算戦績）
+P -> Title : テニスを選ぶ
+Title --> P : 試合設定（難易度・試合の長さ・チームカラー）
+P -> Title : 選択
+Title -> Set : すぐ保存
+P -> Title : 試合開始！
+Title -> Flow : GoSport(Tennis)（フェードアウト）
+Flow -> Game : Tennis シーン
+Game -> Game : InitMatch(setup)\nライト・カメラ・観客・コートを実行時に生成
+Game -> Hud : MatchHud.Create（スコアボード・スティック・ボタン）
+Hud --> P : 開始バナー「TENNIS」＋ 難易度・試合形式
+loop ポイントごと
+  P -> Game : 操作（スティック・ボタン）
+  Game -> Game : ラリー → 審判 → 得点
+  Game -> Hud : スコア・ヒント・ゲージを更新
+  Game -> Game : PointFeedback（歓声・振動）
+end
+Game -> Game : FinishMatch(humanWon, …)
+Game -> Set : MatchRecords.Record()（自動対戦では記録しない）
+Set -> PP : 保存
+Game -> Hud : 2.8 秒後に ShowResult（YOU WIN! / スタッツ）
+alt もう一度
+  P -> Hud : もう一度
+  Hud -> Flow : Reload()
+else 種目選択へ
+  P -> Hud : 種目選択へ
+  Hud -> Flow : GoTitle()
+end
+
+note over Game
+  アプリがバックグラウンドへ回ると自動でポーズ。
+  シーン遷移時にキャッシュしたマテリアル・テクスチャのうち未使用のものを解放
+end note
+@enduml

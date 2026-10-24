@@ -1,0 +1,13 @@
+@startsalt wf-01-start
+!include _style.iuml
+title 画面イメージ S01 スタート（ワイヤーフレーム・横画面 1920×1080）
+{+
+  <i>（背景：台座の上で回る 3 種目のボールの 3D ステージ）</i>
+  {+
+    <size:36><b>SPORTS STADIUM</b></size>
+    スポーツスタジアム  ～ バスケ・テニス・バレー ～
+  }
+  <b>画面をタップしてスタート</b>（点滅）
+  { <i>（右下）</i> ver 1.0 }
+}
+@endsalt

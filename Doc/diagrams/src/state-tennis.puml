@@ -1,0 +1,20 @@
+@startuml state-tennis
+!include _style.iuml
+title 状態遷移図 — テニスのポイント（TennisGame.Phase）
+hide empty description
+
+[*] --> Intro
+Intro : 開始バナー（2.2 秒）
+PreServe : サーバーがボールを持つ\nレシーバーは位置取り
+Toss : トス（ボールが上がる）\nインパクトのタイミング
+Rally : ラリー中\nCPU は落下点を先読み
+Dead : ポイント確定の余韻（0.8 秒）
+
+Intro --> PreServe
+PreServe --> Toss : A ボタン
+Toss --> Rally : インパクト成功
+Toss --> PreServe : トスのやり直し\n（打たずに落ちた）
+Rally --> Dead : フォルト・アウト・\nツーバウンド・ネット
+Dead --> PreServe : 次のポイント\n（サーブ権・コートの左右を更新）
+Dead --> [*] : 試合終了 → リザルト
+@enduml

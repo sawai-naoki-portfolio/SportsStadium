@@ -1,0 +1,52 @@
+@startuml architecture
+!include _style.iuml
+title システム構成図 — レイヤーと依存の向き（Sports → … → App/Settings）
+
+package "Assets/SportsGame/Scripts/Runtime（SportsGame.Runtime.asmdef）" {
+  package "Sports（種目ごと）" as Sports {
+    [Basketball] as SB
+    [Tennis] as ST
+    [Volleyball] as SV
+  }
+  package "Match / UI / Presentation / Title" as Mid {
+    [MatchBase\n3 種目共通の試合の土台] as MB
+    [UI\nUIKit・MatchHud・TouchJoystick] as UI
+    [Presentation\nCameraRig・BallView・観客・Fx] as Pres
+    [Title\nTitleScreen と各パネル] as Title
+  }
+  package "Physics / Rendering / Audio / Input / Characters" as Low {
+    [Physics\nBallSim・BallMath・BallPredictor・\nコライダー（AABB・トーラス・ネット）] as Phys
+    [Rendering\nMeshFactory・ProcTextures・Mats] as Rend
+    [Audio\nAudioManager・SfxSynth・MusicSynth] as Aud
+    [Input\nGameInput（タッチ/キー/パッド）] as Inp
+    [Characters\nHumanoid の組み立てと\n手続き的アニメーション] as Chr
+  }
+  package "App / Settings" as Base {
+    [App\nAppBootstrap・SceneFlow・GameLog] as App
+    [Settings\nGameSettings・MatchRecords（PlayerPrefs）] as Set
+  }
+}
+package "Scripts/Editor（SportsGame.Editor.asmdef）" {
+  [セットアップメニュー\nマテリアル・シーン・ビルド設定・ポストエフェクト] as Ed
+}
+package "Tests" {
+  [EditMode\n得点・審判・物理・入力] as TE
+  [PlayMode\nシーン起動・自動対戦で最後まで] as TP
+}
+folder "Scenes\nTitle / Basketball / Tennis / Volleyball" as Scenes
+database "PlayerPrefs\n設定・戦績" as PP
+
+Sports --> Mid
+Mid --> Low
+Low --> Base
+Set --> PP
+Ed ..> Scenes : 自動生成
+TE ..> Sports
+TP ..> Scenes
+
+note right of Phys
+  重力を解析解で積分するため、軌道計算（BallMath）と
+  実際の動き（BallSim）が一致し、CPU は BallPredictor で
+  ボールの行き先を先読みできる。
+end note
+@enduml

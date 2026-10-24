@@ -1,0 +1,46 @@
+@startuml seq-tennis-rally
+!include _style.iuml
+title シーケンス図③ テニスのサーブとラリー（CPU の先読み）
+autonumber "<b>[0]"
+
+actor プレイヤー as P
+participant "TennisGame" as G
+participant "TennisHumanController" as HC
+participant "TennisAIController" as AI
+participant "TennisShotSolver" as SS
+participant "BallSim" as B
+participant "BallPredictor" as BPd
+participant "TennisReferee" as Ref
+participant "TennisScore" as Sc
+
+== サーブ ==
+G -> G : Phase = PreServe
+P -> G : A ボタン → トス
+G -> G : Phase = Toss（ボールが上がる）
+P -> G : もう一度押してインパクト（タイミングゲージ）
+G -> SS : 狙いと初速度（品質に応じてブレ）
+G -> B : Launch
+G -> G : Phase = Rally
+
+== ラリー ==
+loop ポイントが決まるまで
+  G -> BPd : Simulate(ball.Clone(), …)（0.08 秒ごと）
+  BPd --> AI : 落下点・打点の候補
+  AI -> AI : TickRally：落下点へ移動
+  G -> G : 着地点マーカーを表示
+  alt プレイヤーが打つ
+    P -> HC : トップスピン / スライス / ロブ（ボレー・スマッシュは位置で自動）
+    HC --> G : DecideShot → ShotRequest
+  else CPU が打つ
+    AI --> G : DecideShot（難易度で狙いとミスを調整）
+  end
+  G -> SS : NetTrajectory でネットを越える初速度
+  G -> B : Launch
+  B -> Ref : onContact（バウンド・ネット・プレイヤー）
+  Ref -> Ref : フォルト・アウト・ツーバウンド・ネットを判定
+end
+Ref --> G : RallyDecision
+G -> Sc : AwardPoint(winner)
+Sc --> G : TennisScoreEvent（Game / Set / Match / TiebreakStart）
+G --> P : 「15-0」「デュース」「アドバンテージ」などを表示
+@enduml

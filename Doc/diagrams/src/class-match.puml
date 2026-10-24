@@ -1,0 +1,105 @@
+@startuml class-match
+!include _style.iuml
+title クラス図① 試合の土台と種目ごとの役割分担（テニスの例）
+
+abstract class MatchBase <<MonoBehaviour>> {
+  # Hud : MatchHud
+  # Rig : CameraRig
+  # Crowd : CrowdAnimator
+  # MatchOver : bool
+  # IsPaused : bool
+  # {static} FrameDelta : float  // 処理落ち時の上限 0.05 秒
+  --
+  # {abstract} Sport : Sport
+  # InitMatch(setup : MatchSetup)
+  # PointFeedback(humanScored, highlight)
+  # FinishMatch(humanWon, title, confettiAt, buildResult)
+  # After(seconds, action)
+  # SlowMotion(scale, realSeconds)
+}
+class BasketballGame
+class TennisGame {
+  - phase : Phase（Intro / PreServe / Toss / Rally / Dead）
+  - players : TennisPlayer[2]
+  - config : TennisConfig
+}
+class VolleyballGame
+MatchBase <|-- BasketballGame
+MatchBase <|-- TennisGame
+MatchBase <|-- VolleyballGame
+
+struct MatchSetup {
+  title / homeName / awayName
+  buttons : ButtonSpec[]
+  fov / background / skybox
+  lighting / crowds / ambienceVolume
+}
+MatchBase ..> MatchSetup
+
+package "テニスの部品（他の種目も同じ構成）" {
+  class TennisDims <<static>> {
+    コート寸法・イン/アウト
+  }
+  class TennisScore {
+    + GamesPerSet / SetsToWin
+    + Tiebreak : bool
+    + Winner : int
+    + CurrentServer / IsDeuce / Advantage
+    + AwardPoint(winner) : TennisScoreEvent
+    + PointLabel(player) : string
+    + Summary() : string
+    （Unity 非依存・テスト対象）
+  }
+  class TennisReferee {
+    ボールの接触から
+    フォルト・アウト・得点を判定
+    （テスト対象）
+  }
+  class TennisShotSolver {
+    狙いと初速度の計算
+  }
+  interface ITennisController {
+    + IsHuman : bool
+    + ServeError : float
+    + TickRally(self, dt)
+    + DecideShot(self, geometry) : ShotRequest
+    + OnOpponentHit(self)
+  }
+  class TennisHumanController
+  class TennisAIController {
+    BallPredictor で落下点を先読み
+  }
+  class TennisHudPresenter {
+    状態を HUD の文言・ボタンへ変換
+  }
+  class TennisConfig <<Serializable>> {
+    Inspector で調整（Vector2 は
+    かんたん〜むずかしいの補間）
+  }
+  class TennisPlayer
+}
+
+TennisGame --> TennisScore
+TennisGame --> TennisReferee
+TennisGame --> TennisShotSolver
+TennisGame --> TennisHudPresenter
+TennisGame --> TennisConfig
+TennisGame "1" *-- "2" TennisPlayer
+TennisPlayer --> ITennisController
+ITennisController <|.. TennisHumanController
+ITennisController <|.. TennisAIController
+TennisReferee ..> TennisDims
+
+class MatchHud {
+  + Banner / Scoreboard / Meter / Hint
+  + Paused : bool
+  + ShowResult(result)
+}
+MatchBase --> MatchHud
+
+note bottom of ITennisController
+  人の入力と CPU の判断を同じインターフェースで扱うため、
+  自動対戦（DebugOptions.AutoPlay）やテストでは
+  両側を AI にして最後まで試合をさせられる。
+end note
+@enduml

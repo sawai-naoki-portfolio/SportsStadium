@@ -1,0 +1,10 @@
+@startsalt wf-11-pause
+!include _style.iuml
+title 画面イメージ S11 ポーズ（ワイヤーフレーム・モーダル）
+{+
+  <b>ポーズ</b>
+  [     試合に戻る     ]
+  [  最初からやり直す  ]
+  [   種目選択へ戻る   ]
+}
+@endsalt

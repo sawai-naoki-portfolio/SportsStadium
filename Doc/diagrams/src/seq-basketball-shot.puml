@@ -1,0 +1,43 @@
+@startuml seq-basketball-shot
+!include _style.iuml
+title シーケンス図② バスケットボールのジャンプシュート（成功率を決めてから物理に任せる）
+autonumber "<b>[0]"
+
+actor プレイヤー as P
+participant "BasketballGame" as G
+participant "BasketballPlayer\n（Humanoid）" as BP
+participant "HudMeter\n（タイミングゲージ）" as M
+participant "BasketballShotModel" as SM
+participant "BallSim" as B
+participant "TorusCollider\n（リング）" as Rim
+
+P -> G : シュートボタンを押す
+G -> G : StartShot()：距離と進入速度から\nジャンパー / レイアップ / ダンクを決定
+G -> BP : しゃがむ → ジャンプ（Shoot アニメーション）
+loop ボタンを押している間
+  G -> M : meter = 経過時間 ÷ 頂点までの時間
+  M --> P : ゲージ（PERFECT の窓は緑）
+end
+P -> G : ボタンを離す（リリース）
+G -> SM : TimingQuality(meter) → 理想のタイミングとのずれ
+G -> SM : Contest(shooter, defender, 空中か)\n近く・前方・ジャンプ中ほど強いチェック
+G -> SM : MakeChance(kind, 距離, timing, perfect, contest, 難易度補正)
+SM --> G : 成功率
+G -> G : 乱数で成否を決定（2 点 / 3 点を記録）
+alt 成功
+  G -> B : Launch（リング中心へ向かう初速度）
+else 失敗
+  G -> B : Launch（リングに当たる位置へ）
+end
+loop 毎フレーム（サブステップ 4）
+  B -> Rim : 衝突判定（リング・バックボード・支柱）
+  Rim --> G : onContact（リムに触れた、ネットを通過）
+end
+G -> G : AwardBasket(team, points, dunk) / リバウンド
+G --> P : 歓声・得点表示（ダンクは短いスローモーション）
+
+note over SM, B
+  「成功と判定したシュートが物理的にも本当に入るか」を
+  EditMode テスト（BasketballShotPhysicsTests）で確かめている
+end note
+@enduml

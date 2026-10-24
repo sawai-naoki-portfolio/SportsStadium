@@ -1,0 +1,37 @@
+@startuml screen-transition
+!include _style.iuml
+title 画面遷移図 — スポーツスタジアム
+hide empty description
+left to right direction
+
+state "Title シーン" as TitleScene {
+  state "S01 スタート\n「画面をタップしてスタート」" as S01
+  state "S02 種目選択\n3 枚のカード・通算戦績" as S02
+  state "S03 試合設定\n難易度・試合の長さ・チームカラー" as S03
+  state "S04 設定（モーダル）\nBGM・効果音・振動・画質・\n移動アシスト・戦績リセット" as S04
+  state "S05 あそびかた（モーダル）" as S05
+}
+state "試合シーン\nBasketball / Tennis / Volleyball" as MatchScene {
+  state "S10 試合（HUD）\nスコアボード・スティック・ボタン" as S10
+  state "S11 ポーズ（モーダル）" as S11
+  state "S12 リザルト\nYOU WIN! / YOU LOSE...・スタッツ" as S12
+}
+
+[*] --> S01
+S01 --> S02 : タップ
+S02 --> S01 : ◀ タイトル
+S02 --> S04 : 設定
+S04 --> S02 : とじる
+S02 --> S03 : カードを選ぶ
+S03 --> S02 : もどる
+S03 --> S05 : あそびかた
+S05 --> S03 : とじる
+S03 --> S10 : 試合開始！（フェード）
+S10 --> S11 : II / Esc / Start\nアプリがバックグラウンドへ
+S11 --> S10 : 試合に戻る
+S11 --> S10 : 最初からやり直す
+S11 --> S01 : 種目選択へ戻る\n（Title シーンを読み直す）
+S10 --> S12 : 試合終了（2.8 秒後）
+S12 --> S10 : もう一度
+S12 --> S01 : 種目選択へ\n（Title シーンを読み直す）
+@enduml

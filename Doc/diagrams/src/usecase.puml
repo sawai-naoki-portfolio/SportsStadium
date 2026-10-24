@@ -1,0 +1,44 @@
+@startuml usecase
+!include _style.iuml
+title ユースケース図 — スポーツスタジアム
+left to right direction
+
+actor "プレイヤー" as P
+actor "CPU\n（AI コントローラー）" as CPU
+
+rectangle "スポーツスタジアム（Unity / Android・iOS・Windows 横画面）" {
+  usecase "種目を選ぶ\n（通算戦績を見る）" as U1
+  usecase "試合を設定する\n難易度・試合の長さ・チームカラー" as U2
+  usecase "あそびかたを読む" as U3
+  usecase "設定を変える\nBGM・効果音・振動・画質・移動アシスト" as U4
+  usecase "戦績をリセットする" as U5
+  package "試合" {
+    usecase "バスケットボール 1on1\nドリブル・シュート・ブロック…" as B
+    usecase "テニス シングルス\nサーブ・スピン・ボレー…" as T
+    usecase "ビーチバレー 2on2\nレシーブ→トス→スパイク" as V
+    usecase "ポーズ・やり直す・種目選択へ" as Pause
+    usecase "リザルトを見る\n（スタッツ）" as R
+  }
+}
+
+P --> U1
+P --> U2
+P --> U3
+P --> U4
+U5 .> U4 : <<extend>>
+P --> B
+P --> T
+P --> V
+P --> Pause
+B --> CPU
+T --> CPU
+V --> CPU
+R .> B : <<include>>
+R .> T : <<include>>
+R .> V : <<include>>
+
+legend bottom
+  入力はタッチ（フローティングスティック＋右側のボタン）・キーボード・ゲームパッドを統合。
+  コート・キャラクター・テクスチャ・効果音・BGM はすべて実行時に生成（外部アセットは日本語フォントのみ）。
+endlegend
+@enduml
