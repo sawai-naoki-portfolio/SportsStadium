@@ -26,8 +26,6 @@
 </tr>
 </table>
 
-> 試合設定・設定・ポーズ・リザルトの画面は、画面定義書でワイヤーフレームとして示しています（→ [screenshots/README.md](screenshots/README.md)）。
-
 ## プロジェクト概要
 
 | 項目 | 内容 |
@@ -102,7 +100,7 @@ Unity の物理エンジンに頼らず、**重力を解析解で積分する決
 | [設計書](design.md) | 構成・役割分担・クラス図・シーケンス図・状態遷移図・ボール物理・手続き的生成・データ |
 | [テスト仕様・結果](test-report.md) | EditMode / PlayMode テスト 58 件の内訳と結果・今後の改善 |
 | [diagrams/](diagrams/) | PlantUML ソース（`src/`）と SVG（`svg/`） |
-| [screenshots/](screenshots/) | 主要画面のスクリーンショット（実機） |
+| [screenshots/](screenshots/) | 主要画面のスクリーンショット（1920×1080） |
 
 ### 図の一覧
 

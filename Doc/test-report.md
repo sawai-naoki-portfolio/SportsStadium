@@ -39,5 +39,4 @@ Unity の **Window > General > Test Runner** で EditMode / PlayMode を実行�
 
 | 項目 | 内容 |
 |---|---|
-| 残りの画面のスクリーンショット | 試合設定・設定・ポーズ・リザルトの画面イメージはワイヤーフレームのまま。実機で撮影して差し替える（[screenshots/README.md](screenshots/README.md)） |
 | CI | Unity 非依存の得点ロジック（`*Score`）は .NET で回せるため、vector と同様に GitHub Actions でテストできる |

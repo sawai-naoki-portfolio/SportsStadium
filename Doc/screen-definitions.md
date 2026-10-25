@@ -8,7 +8,7 @@
 | 画面遷移図 | [diagrams/svg/screen-transition.svg](diagrams/svg/screen-transition.svg) |
 | 共通仕様 | UI はすべてコード（`UIKit`）で生成。ボタン押下時は拡大縮小のアニメーションと効果音。モーダルは `ModalPanel` |
 
-> **画面イメージについて**：S01 スタート・S02 種目選択・S10 試合（3 種目）は**実機のスクリーンショット**です。まだ撮影していない S03〜S05・S11・S12 は、**コードのレイアウトと文言から起こしたワイヤーフレーム**（PlantUML Salt。数値は例）で示しています。S01・S02・S10 のワイヤーフレームも、設計時の画面イメージとして [diagrams/svg/](diagrams/svg/) に残しています。
+> **画面イメージについて**：すべての画面を**実際のゲーム画面のスクリーンショット**で示しています。コードのレイアウトと文言から起こしたワイヤーフレーム（PlantUML Salt）も、設計時の画面イメージとして [diagrams/svg/](diagrams/svg/) に残しています。
 
 ![画面遷移図](diagrams/svg/screen-transition.svg)
 
@@ -64,7 +64,9 @@
 
 ### S03 試合設定
 
-![S03](diagrams/svg/wf-03-setup.svg)
+![S03](screenshots/03-setup.jpg)
+
+ワイヤーフレーム：[wf-03-setup.svg](diagrams/svg/wf-03-setup.svg)
 
 | No | 項目 | 種別 | 選択肢 | 内容 |
 |---|---|---|---|---|
@@ -85,7 +87,18 @@
 
 ### S04 設定 ／ S05 あそびかた
 
-![S04](diagrams/svg/wf-04-options.svg)
+<table>
+<tr>
+<td width="50%"><img src="screenshots/04-options.jpg" alt="設定"></td>
+<td width="50%"><img src="screenshots/05-howto.jpg" alt="あそびかた"></td>
+</tr>
+<tr>
+<td align="center">S04 設定</td>
+<td align="center">S05 あそびかた</td>
+</tr>
+</table>
+
+ワイヤーフレーム：[wf-04-options.svg](diagrams/svg/wf-04-options.svg)
 
 | No | 項目 | 種別 | 内容 |
 |---|---|---|---|
@@ -108,9 +121,9 @@
 <td width="33%"><img src="screenshots/12-volleyball.jpg" alt="ビーチバレー"></td>
 </tr>
 <tr>
-<td align="center">バスケットボール（守備時）</td>
+<td align="center">バスケットボール（ダンクを決めた直後）</td>
 <td align="center">テニス</td>
-<td align="center">ビーチバレー（相手の攻撃時）</td>
+<td align="center">ビーチバレー</td>
 </tr>
 </table>
 
@@ -145,7 +158,18 @@
 
 ### S11 ポーズ ／ S12 リザルト
 
-![S11](diagrams/svg/wf-11-pause.svg) ![S12](diagrams/svg/wf-12-result.svg)
+<table>
+<tr>
+<td width="50%"><img src="screenshots/20-pause.jpg" alt="ポーズ"></td>
+<td width="50%"><img src="screenshots/21-result.jpg" alt="リザルト"></td>
+</tr>
+<tr>
+<td align="center">S11 ポーズ</td>
+<td align="center">S12 リザルト</td>
+</tr>
+</table>
+
+ワイヤーフレーム：[wf-11-pause.svg](diagrams/svg/wf-11-pause.svg) ／ [wf-12-result.svg](diagrams/svg/wf-12-result.svg)
 
 | 画面 | No | 項目 | 内容 |
 |---|---|---|---|
