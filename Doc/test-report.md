@@ -12,6 +12,8 @@
 
 Unity の **Window > General > Test Runner** で EditMode / PlayMode を実行します。
 
+GitHub Actions（`.github/workflows/core.yml`）では、Unity 非依存の `TennisScoreTests` だけを .NET 8 で実行します（`Tools/CoreTests/CoreTests.csproj` が `TennisScore.cs` とテストをリンク参照）。Unity のライセンスが必要な EditMode / PlayMode のその他のテストは CI では実行しません。
+
 ## 3. テストケース一覧
 
 | ファイル | 種類 | 件数 | 主なケース |
@@ -25,7 +27,9 @@ Unity の **Window > General > Test Runner** で EditMode / PlayMode を実行�
 | `InputAndUITests` | EditMode | 6 | ボタンの押下・離しのエッジ、1 フレーム内のタップ、不正な SafeArea は全画面に戻す、難易度の強さの範囲、全種目に 3 つの試合の長さ、チームカラーと相手の色が区別できる |
 | `SceneSmokeTests` | PlayMode | 7 | タイトルから試合設定まで遷移、3 種目の自動対戦で得点が進む、人がシュートできる、人がサーブできる（テニス・バレー） |
 | `FullMatchTests` | PlayMode | 3 | バスケ（かんたん）・テニス（ふつう）・バレー（むずかしい）を最後まで戦い、リザルトに到達 |
-| **合計** | | **58**（パラメータ化されたケースを展開すると実行数はさらに多い） | |
+| **合計** | | **58** | |
+
+件数は `Assets/SportsGame/Tests` 内の `[Test]` / `[UnityTest]` を静的に数えた値です（`[TestCase]` などのパラメータ化属性は使用していないため、実行数も同数のはずですが、Unity での実行結果は未確認です）。
 
 ## 4. 結果
 
@@ -39,4 +43,4 @@ Unity の **Window > General > Test Runner** で EditMode / PlayMode を実行�
 
 | 項目 | 内容 |
 |---|---|
-| CI | Unity 非依存の得点ロジック（`*Score`）は .NET で回せるため、vector と同様に GitHub Actions でテストできる |
+| CI | `TennisScoreTests` は GitHub Actions で実行済み。他の `*Score` など Unity 非依存のロジックも同様に追加できる |

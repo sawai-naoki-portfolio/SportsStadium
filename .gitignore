@@ -77,3 +77,6 @@ Desktop.ini
 # Performance Testing package writes these temporarily during builds/test runs
 /[Aa]ssets/[Rr]esources/PerformanceTestRun*
 /[Aa]ssets/[Rr]esources.meta
+
+# CI 用 (Unity 非依存テスト) のプロジェクトは追跡する
+!/Tools/CoreTests/*.csproj

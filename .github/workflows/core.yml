@@ -1,0 +1,19 @@
+name: core
+
+# Unity 非依存のテスト（TennisScoreTests）だけを .NET で実行する。
+# Unity のテスト（EditMode / PlayMode）は Unity ライセンスが必要なため CI では回さない。
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  core-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Run Unity-independent tests
+        run: dotnet test Tools/CoreTests/CoreTests.csproj --configuration Release --logger "console;verbosity=normal"
